@@ -62,8 +62,37 @@ void serveur_appli(char *service)
 /* Procedure correspondant au traitemnt du serveur de votre application */
 
 {
+	struct sockaddr_in *p_adr_socket;
+	adr_socket(service, NULL, SOCK_STREAM, &p_adr_socket);
+	int SocketServer = h_socket(AF_INET, SOCK_STREAM);
+	if (SocketServer == -1) {
+		printf("Impossible de créer la socket > Fin\n");
+		return;
+	}
+	h_bind(SocketServer, p_adr_socket);
+	h_listen(SocketServer, 1);
+	int SocketClient = h_accept(SocketServer, p_adr_socket);
 
-/* A completer ... */
+	char** dictionnaire = malloc(sizeof(char) * 10 * 15);
+	dictionnaire[0] = "anniversaire";
+	dictionnaire[1] = "hospitalier";
+	dictionnaire[2] = "destructeur";
+	dictionnaire[3] = "intimidation";
+	dictionnaire[4] = "redemption";
+	dictionnaire[5] = "souris";
+	dictionnaire[6] = "table";
+	dictionnaire[7] = "decapition";
+	dictionnaire[8] = "anticipation";
+	dictionnaire[9] = "invertebres";
+
+	char joues[26] = {0};
+
+	srand(time(NULL));
+	char* mot = dictionnaire[rand() % 10];
+
+
+
+
 
 }
 
