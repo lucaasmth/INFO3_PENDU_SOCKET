@@ -105,7 +105,7 @@ void serveur_appli(char *service)
 		res[i] = '-';
 	}
 	
-	int LettresTrouvees = 1;
+	int LettresTrouvees = 0;
 	int NbEssais = 10;
 	while (1)
 	{
@@ -122,12 +122,6 @@ void serveur_appli(char *service)
 			}
 		}
 
-		
-		//Envoi au client le tableau res mis à jour
-		h_writes(SocketClient,res,1024);
-		if (boolTrouve == 0)
-			NbEssais--;
-
 		if (NbEssais == 0)
 		{
 			//Perdu
@@ -142,6 +136,12 @@ void serveur_appli(char *service)
 			h_writes(SocketClient,"GAGNE",1024);
 			break;
 		}
+
+		
+		//Envoi au client le tableau res mis à jour
+		h_writes(SocketClient,res,1024);
+		if (boolTrouve == 0)
+			NbEssais--;
 	}
 	h_close(SocketClient);
 	h_close(SocketServer);
