@@ -107,7 +107,7 @@ void client_appli (char *serveur,char *service)
 			printf("Fin de la communication\n");
 			break;
 		}
-		printf("Message recu: %s\n", buffer);
+		//printf("Message recu: %s\n", buffer);
 		if(strcmp(buffer, "GAGNE") == 0) {
 			printf("GAGNE\n");
 			break;

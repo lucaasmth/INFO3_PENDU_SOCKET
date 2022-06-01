@@ -85,7 +85,7 @@ void serveur_appli(char *service)
 	dictionnaire[4] = "redemption";
 	dictionnaire[5] = "souris";
 	dictionnaire[6] = "table";
-	dictionnaire[7] = "decapition";
+	dictionnaire[7] = "decapitation";
 	dictionnaire[8] = "anticipation";
 	dictionnaire[9] = "invertebres";
 
@@ -115,7 +115,8 @@ void serveur_appli(char *service)
 		for (int i = 0; i < lenMot; i++) {
 
 			if (lettrerecue == mot[i]) {
-				res[i] == lettrerecue;
+				printf("Lettre trouvée\n");
+				res[i] = lettrerecue;
 				LettresTrouvees++;
 				boolTrouve = 1;
 			}
