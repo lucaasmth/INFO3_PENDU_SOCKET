@@ -16,7 +16,6 @@
 #include <sys/signal.h>
 #include <sys/wait.h>
 #include<stdlib.h>
-#include <arpa/inet.h>
 
 #include "fon.h"   		/* primitives de la boite a outils */
 
@@ -72,9 +71,7 @@ void client_appli (char *serveur,char *service)
 {
 	int socket = h_socket(AF_INET, SOCK_STREAM);
 	struct sockaddr_in *adr_serveur = malloc(sizeof(struct sockaddr_in));
-	adr_serveur->sin_family = AF_INET;
-	adr_serveur->sin_port = htons(atoi(service));
-	adr_serveur->sin_addr.s_addr = inet_addr(serveur);
+	adr_socket(service, serveur, SOCK_STREAM, &adr_serveur);
 	h_connect(socket, adr_serveur);
 
 	char* buffer = malloc(TAILLE_BUFFER);
