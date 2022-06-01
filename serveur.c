@@ -114,7 +114,7 @@ void serveur_appli(char *service)
 		int boolTrouve = 0;
 		for (int i = 0; i < lenMot; i++) {
 
-			if (lettrerecue == mot[i]) {
+			if (lettrerecue == mot[i] && res[i] != lettrerecue) {
 				printf("Lettre trouvée\n");
 				res[i] = lettrerecue;
 				LettresTrouvees++;
