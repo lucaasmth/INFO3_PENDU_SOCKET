@@ -105,7 +105,7 @@ void serveur_appli(char *service)
 		res[i] = '-';
 	}
 	
-	int LettresTrouvees = 0;
+	int LettresTrouvees = 1;
 	int NbEssais = 10;
 	while (1)
 	{
