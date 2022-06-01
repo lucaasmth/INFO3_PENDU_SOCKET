@@ -16,6 +16,7 @@
 #include <sys/signal.h>
 #include <sys/wait.h>
 #include<stdlib.h>
+#include<string.h>
 
 #include "fon.h"   		/* primitives de la boite a outils */
 
@@ -75,12 +76,51 @@ void client_appli (char *serveur,char *service)
 	h_connect(socket, adr_serveur);
 
 	char* buffer = malloc(TAILLE_BUFFER);
-	while(h_reads(socket, buffer, TAILLE_BUFFER) > 0)
-	{
-		printf("%s", buffer);
+	//On lit le nombre de lettres à deviner
+	int read = h_reads(socket, buffer, TAILLE_BUFFER);
+	if(read == -1) {
+		printf("Erreur\n");
+		exit(1);
 	}
+	if(read == 0) {
+		printf("Fin de la communication\n");
+		exit(1);
+	}
+	int longueur_mot = atoi(buffer);
+	printf("Nombre de lettres à deviner: %d\n", longueur_mot);
+	char* mot = malloc(longueur_mot);
+	for(int i = 0; i < longueur_mot; i++) {
+		mot[i] = '_';
+	}
+	while(1) {
+		printf("%s\n", mot);
+		printf("Entrez une lettre: ");
+		fgets(buffer, TAILLE_BUFFER, stdin);
 
-	free(adr_serveur);
+		h_writes(socket, buffer, TAILLE_BUFFER);
+		read = h_reads(socket, buffer, TAILLE_BUFFER);
+		if(read == -1) {
+			printf("Erreur\n");
+			break;
+		}
+		if(read == 0) {
+			printf("Fin de la communication\n");
+			break;
+		}
+		printf("Message recu: %s\n", buffer);
+		if(strcmp(buffer, "GAGNE") == 0) {
+			printf("GAGNE\n");
+			break;
+		}
+		if(strcmp(buffer, "PERDU") == 0) {
+			printf("PERDU\n");
+			break;
+		}
+		for(int i = 0; i < longueur_mot; i++) {
+			mot[i] = buffer[i];
+		}
+	}
+	h_close(socket);
 }
 
 /*****************************************************************************/
