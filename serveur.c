@@ -90,6 +90,10 @@ void serveur_appli(char *service)
 	srand(time(NULL));
 	char* mot = dictionnaire[rand() % 10];
 
+	char *buff = malloc(sizeof(char) * 100);
+	sprintf(buff, "%d", nblettres);
+	h_writes(SocketClient, buff, 2);
+
 
 
 
