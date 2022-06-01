@@ -12,6 +12,7 @@
 /******************************************************************************/	
 
 #include<stdio.h>
+#include<string.h>
 #include <curses.h>
 
 #include<sys/signal.h>
@@ -73,6 +74,8 @@ void serveur_appli(char *service)
 	h_listen(SocketServer, 1);
 	int SocketClient = h_accept(SocketServer, p_adr_socket);
 
+
+
 	char** dictionnaire = malloc(sizeof(char) * 10 * 15);
 	dictionnaire[0] = "anniversaire";
 	dictionnaire[1] = "hospitalier";
@@ -89,8 +92,48 @@ void serveur_appli(char *service)
 
 	srand(time(NULL));
 	char* mot = dictionnaire[rand() % 10];
+	int lenMot = strlen(mot);
 
+	char* res = malloc(sizeof(char) * lenMot);
+	for (int i = 0; i <lenMot ; i++)
+	{
+		res[i] = '-';
+	}
+	
+	int LettresTrouvees = 0;
+	int NbEssais = 10;
+	while (1)
+	{
+		char lettrerecue;
+		int boolTrouve = 0;
+		for (int i = 0; i < lenMot; i++) {
 
+			if (lettrerecue == mot[i]) {
+				res[i] == lettrerecue;
+				LettresTrouvees++;
+				boolTrouve = 1;
+			}
+		}
+
+		//Dis au client qu'il a trouvé une lettre
+		//Envoi au client le tableau res mis à jour
+		if (boolTrouve = 0)
+			NbEssais--;
+
+		if (NbEssais == 0)
+		{
+			//Perdu
+			//Afficher le résultat qu'il fallait trouver
+			break;
+		}
+		
+		if(LettresTrouvees == lenMot){
+			//
+			// Gagné
+			break;
+		}
+	}
+	
 
 
 
