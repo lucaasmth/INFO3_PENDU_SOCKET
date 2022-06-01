@@ -124,7 +124,7 @@ void serveur_appli(char *service)
 		
 		//Envoi au client le tableau res mis à jour
 		h_writes(SocketClient,res,1024);
-		if (boolTrouve = 0)
+		if (boolTrouve == 0)
 			NbEssais--;
 
 		if (NbEssais == 0)
