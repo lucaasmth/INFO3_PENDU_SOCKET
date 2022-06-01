@@ -16,11 +16,13 @@
 #include <sys/signal.h>
 #include <sys/wait.h>
 #include<stdlib.h>
+#include <arpa/inet.h>
 
 #include "fon.h"   		/* primitives de la boite a outils */
 
 #define SERVICE_DEFAUT "1111"
 #define SERVEUR_DEFAUT "127.0.0.1"
+#define TAILLE_BUFFER 1024
 
 void client_appli (char *serveur, char *service);
 
@@ -68,11 +70,21 @@ void client_appli (char *serveur,char *service)
 /* procedure correspondant au traitement du client de votre application */
 
 {
-  
+	int socket = h_socket(AF_INET, SOCK_STREAM);
+	struct sockaddr_in *adr_serveur = malloc(sizeof(struct sockaddr_in));
+	adr_serveur->sin_family = AF_INET;
+	adr_serveur->sin_port = htons(atoi(service));
+	adr_serveur->sin_addr.s_addr = inet_addr(serveur);
+	h_connect(socket, adr_serveur);
 
-/* a completer .....  */
+	char* buffer = malloc(TAILLE_BUFFER);
+	while(h_reads(socket, buffer, TAILLE_BUFFER) > 0)
+	{
+		printf("%s", buffer);
+	}
 
- }
+	free(adr_serveur);
+}
 
 /*****************************************************************************/
 
