@@ -14,6 +14,7 @@
 #include<stdio.h>
 #include<string.h>
 #include <curses.h>
+#include <time.h>
 
 #include<sys/signal.h>
 #include<sys/wait.h>
@@ -94,9 +95,9 @@ void serveur_appli(char *service)
 	char* mot = dictionnaire[rand() % 10];
 	int lenMot = strlen(mot);
 
-	char *buff = malloc(sizeof(char) * 100);
-	sprintf(buff, "%d", nblettres);
-	h_writes(SocketClient, buff, 2);
+	char *buff = malloc(1024);
+	sprintf(buff, "%d", lenMot);
+	h_writes(SocketClient, buff, 1024);
 
 	char* res = malloc(sizeof(char) * lenMot);
 	for (int i = 0; i <lenMot ; i++)
@@ -108,7 +109,8 @@ void serveur_appli(char *service)
 	int NbEssais = 10;
 	while (1)
 	{
-		char lettrerecue;
+		h_reads(SocketClient, buff, 1024);
+		char lettrerecue = buff[0];
 		int boolTrouve = 0;
 		for (int i = 0; i < lenMot; i++) {
 
@@ -119,8 +121,9 @@ void serveur_appli(char *service)
 			}
 		}
 
-		//Dis au client qu'il a trouvé une lettre
+		
 		//Envoi au client le tableau res mis à jour
+		h_writes(SocketClient,res,1024);
 		if (boolTrouve = 0)
 			NbEssais--;
 
@@ -128,15 +131,19 @@ void serveur_appli(char *service)
 		{
 			//Perdu
 			//Afficher le résultat qu'il fallait trouver
+			h_writes(SocketClient,"PERDU",1024);
 			break;
 		}
 		
 		if(LettresTrouvees == lenMot){
 			//
 			// Gagné
+			h_writes(SocketClient,"GAGNE",1024);
 			break;
 		}
 	}
+	h_close(SocketClient);
+	h_close(SocketServer);
 
 
 
